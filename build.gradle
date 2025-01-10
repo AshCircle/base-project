@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.1'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.diffplug.spotless") version "7.0.1"
 }
 
 group = 'com.ashcircle'
@@ -36,4 +37,24 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+spotless {
+	format 'misc', {
+		target '**/*.gradle', '**/*.md'
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+	yaml {
+		target '**/*.yaml', '**/*.yml'
+		prettier()
+	}
+	java {
+		removeUnusedImports()
+		palantirJavaFormat()
+		formatAnnotations()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
 }
